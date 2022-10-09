@@ -6,12 +6,12 @@ import '../../../themes.dart';
 import '../enter_code.dart';
 import 'default_text_field.dart';
 
-final TextEditingController _codeConrtoller = TextEditingController();
-final TextEditingController _numberConrtoller = TextEditingController();
-final TextEditingController _referalConrtoller = TextEditingController();
-
+// ignore: must_be_immutable
 class LowerContainer extends GetView<VerifyUser> {
-  bool isBlankField = false;
+  bool isBlankField = true;
+
+  LowerContainer({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -57,7 +57,7 @@ class LowerContainer extends GetView<VerifyUser> {
                   Expanded(
                     flex: 1,
                     child: defaultTextField(
-                      controller: _codeConrtoller,
+                      controller: controller.codeConrtoller,
                       hintText: "+92",
                       keyboardType: TextInputType.number,
                       onchanged: (p0) => chkTextField(),
@@ -70,12 +70,12 @@ class LowerContainer extends GetView<VerifyUser> {
                     flex: 2,
                     child: defaultTextField(
                       onchanged: (p0) {
-                        _numberConrtoller.text.isNotEmpty
+                        controller.numberConrtoller.text.isNotEmpty
                             ? verifyController.checkColor(true)
                             : verifyController.checkColor(false);
                         chkTextField();
                       },
-                      controller: _numberConrtoller,
+                      controller: controller.numberConrtoller,
                       hintText: "Enter your Phone ",
                       keyboardType: TextInputType.number,
                       suffixIcon: Icon(Icons.cancel_outlined,
@@ -90,7 +90,7 @@ class LowerContainer extends GetView<VerifyUser> {
                 height: 20.h,
               ),
               defaultTextField(
-                controller: _referalConrtoller,
+                controller: controller.referalConrtoller,
                 hintText: "Enter referal number       (optional)",
               ),
               SizedBox(
@@ -108,9 +108,11 @@ class LowerContainer extends GetView<VerifyUser> {
                   onPressed: isBlankField
                       ? null
                       : () {
-                          Get.to(EnterCode(
-                            number: _numberConrtoller.text,
-                          ));
+                          Get.to(
+                            EnterCode(
+                              number: controller.numberConrtoller.text,
+                            ),
+                          );
                         },
                   child: const Text("Continue",
                       style: TextStyle(
@@ -175,7 +177,8 @@ class LowerContainer extends GetView<VerifyUser> {
   }
 
   void chkTextField() {
-    if (_codeConrtoller.text.isNotEmpty && _numberConrtoller.text.isNotEmpty) {
+    if (controller.codeConrtoller.text.isNotEmpty &&
+        controller.numberConrtoller.text.isNotEmpty) {
       isBlankField = false;
     } else {
       isBlankField = true;

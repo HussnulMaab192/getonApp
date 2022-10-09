@@ -11,6 +11,8 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
+  final _controller = PageController();
+
   var currentIndex = 0;
   @override
   Widget build(BuildContext context) {
@@ -19,17 +21,24 @@ class _BodyState extends State<Body> {
         Expanded(
           flex: 3,
           child: PageView.builder(
+            controller: _controller,
             onPageChanged: (value) {
               setState(() {
                 currentIndex = value;
               });
             },
             itemCount: list.length,
-            itemBuilder: (context, index) => customStats(index),
+            itemBuilder: (context, index) {
+              return customStats(currentIndex);
+            },
           ),
         ),
         // ADDING - SLIDER
-        Expanded(child: dotContainer(currentIndex)),
+        Expanded(
+            child: DotContainer(
+          currentIndex: currentIndex,
+          controller: _controller,
+        )),
       ],
     );
   }
